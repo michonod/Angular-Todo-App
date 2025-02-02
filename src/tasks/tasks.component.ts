@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-tasks',
@@ -9,4 +9,8 @@ import { Component, Input } from '@angular/core';
 })
 export class TasksComponent {
   @Input({ required: true }) tasks!: { key: string; task: string }[];
+  @Output() remove = new EventEmitter<string>();
+  removeTask(id: string) {
+    this.remove.emit(id);
+  }
 }

@@ -13,7 +13,10 @@ export class AppComponent {
     { key: '1', task: 'Wash your dishes' },
     { key: '2', task: 'Go to do store and buy grocceries' },
   ];
-  addTask = (singleTask: {key: string, task: string}) => {
-    this.allTasks = [...this.allTasks, singleTask]
+  addTask(singleTask: { key: string; task: string }) {
+    this.allTasks = [...this.allTasks, singleTask];
+  }
+  removeTask(id: string) {
+    this.allTasks = this.allTasks.filter((task) => task.key !== id);
   }
 }

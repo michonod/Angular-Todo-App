@@ -1,5 +1,5 @@
 <div>
   <h1>Todo list app</h1>
-  <app-form (submit)="addTask($event)" />
-  <app-tasks [tasks]='allTasks' />
+  <app-form (submitTask)="addTask($event)" />
+  <app-tasks [tasks]="allTasks" (remove)="removeTask($event)" />
 </div>
