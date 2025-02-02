@@ -2,6 +2,11 @@ import { Component } from '@angular/core';
 import { FormComponent } from '../form/form.component';
 import { TasksComponent } from '../tasks/tasks.component';
 
+interface Tasks {
+  key: string;
+  task: string;
+  completed: boolean;
+}
 @Component({
   selector: 'app-root',
   imports: [FormComponent, TasksComponent],
@@ -9,15 +14,31 @@ import { TasksComponent } from '../tasks/tasks.component';
   styleUrl: './app.component.css',
 })
 export class AppComponent {
-  allTasks = [
-    { key: '1', task: 'Wash your dishes', completed: false },
-    { key: '2', task: 'Go to do store and buy grocceries', completed: false },
-  ];
-  addTask(singleTask: { key: string; task: string }) {
-    this.allTasks = [...this.allTasks, { ...singleTask, completed: false }];
+  allTasks: { key: string; task: string; completed: boolean }[] = [];
+  ngOnInit() {
+    const storageTasks = localStorage.getItem('tasks');
+    if (storageTasks) {
+      this.allTasks = JSON.parse(storageTasks);
+    }
+  }
+
+  saveToLocalStorage(allTasks: Tasks[]) {
+    localStorage.setItem('tasks', JSON.stringify(allTasks));
+  }
+  addTask(singleTask: { task: string }) {
+    this.allTasks = [
+      ...this.allTasks,
+      {
+        key: String(this.allTasks.length + 1),
+        ...singleTask,
+        completed: false,
+      },
+    ];
+    this.saveToLocalStorage(this.allTasks);
   }
   removeTask(id: string) {
     this.allTasks = this.allTasks.filter((task) => task.key !== id);
+    this.saveToLocalStorage(this.allTasks);
   }
   markTask(id: string, completed: boolean) {
     const completedTask = this.allTasks.find((task) => task.key === id);
@@ -27,7 +48,11 @@ export class AppComponent {
     this.allTasks = [
       ...otherTasks,
       { ...completedTask, completed: completed },
-    ].sort((a, b) => Number(b.key) - Number(a.key));
-    console.log(this.allTasks);
+    ].sort((a, b) => Number(a.key) - Number(b.key));
+    this.saveToLocalStorage(this.allTasks);
+  }
+  clearStorage() {
+    localStorage.setItem('tasks', '');
+    this.allTasks = [];
   }
 }
