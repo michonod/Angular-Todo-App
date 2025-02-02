@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-tasks',
@@ -8,8 +8,5 @@ import { Component } from '@angular/core';
   imports: [],
 })
 export class TasksComponent {
-  tasks = [
-    { key: '1', task: 'Wash your dishes' },
-    { key: '2', task: 'Go to do store and buy grocceries' },
-  ];
+  @Input({ required: true }) tasks!: { key: string; task: string }[];
 }

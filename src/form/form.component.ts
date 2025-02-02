@@ -9,11 +9,13 @@ import { FormsModule } from '@angular/forms';
   imports: [FormsModule],
 })
 export class FormComponent {
-  @Output() submit = new EventEmitter<string>();
+  @Output() submit = new EventEmitter<{ key: string; task: string }>();
   todoTask = '';
+  generateUniqueId() {
+    return Date.now().toString(36) + Math.random().toString(36);
+  }
   onSubmit() {
-    console.log(this.todoTask);
-    this.submit.emit(this.todoTask);
-    console.log('SUBMIT');
+    this.submit.emit({key: this.generateUniqueId(), task: this.todoTask});
+    this.todoTask = ''
   }
 }
