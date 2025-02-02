@@ -1,4 +1,10 @@
 @for(task of tasks; track task.key){
-<p>{{ task.task }}</p>
+<p
+  (click)="markTask(task.key, !task.completed)"
+  [class.completed]="task.completed"
+>
+  {{ task.task }}
+</p>
 <button (click)="removeTask(task.key)">Remove task</button>
+<button (click)="markTask(task.key, !task.completed)">Mark as completed</button>
 }

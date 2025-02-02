@@ -10,13 +10,24 @@ import { TasksComponent } from '../tasks/tasks.component';
 })
 export class AppComponent {
   allTasks = [
-    { key: '1', task: 'Wash your dishes' },
-    { key: '2', task: 'Go to do store and buy grocceries' },
+    { key: '1', task: 'Wash your dishes', completed: false },
+    { key: '2', task: 'Go to do store and buy grocceries', completed: false },
   ];
   addTask(singleTask: { key: string; task: string }) {
-    this.allTasks = [...this.allTasks, singleTask];
+    this.allTasks = [...this.allTasks, { ...singleTask, completed: false }];
   }
   removeTask(id: string) {
     this.allTasks = this.allTasks.filter((task) => task.key !== id);
+  }
+  markTask(id: string, completed: boolean) {
+    const completedTask = this.allTasks.find((task) => task.key === id);
+    if (!completedTask) return;
+
+    const otherTasks = this.allTasks.filter((task) => task.key !== id);
+    this.allTasks = [
+      ...otherTasks,
+      { ...completedTask, completed: completed },
+    ].sort((a, b) => Number(b.key) - Number(a.key));
+    console.log(this.allTasks);
   }
 }
